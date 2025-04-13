@@ -65,7 +65,8 @@ def gameplay(starting_p, maxV, minV):
 
 
 ##  DRIVER CODE  ##
-
+print()
+print("PROBLEM 1 Solve!")
 result = []
 draw = 0
 carlsen_wins = 0
@@ -114,6 +115,41 @@ else:
 
 print('###### Problem 2 solve #######')
 
+# We will be using strength function, utility function, alpha_beta_minimax funtion from part 1
+
+def game_init(player1, cost, maxV, minV):
+    #minimax val without mind control
+    minimax_wo_mc = alpha_beta_minimax(5, 0, float('-inf'), float('inf'), maxV, minV)
     
+    if player1 == 0: #Light is max
+        minimax_w_mc = alpha_beta_minimax(5, True, float('-inf'), float('inf'), maxV, minV)
+        minimax_w_mc_aftercost = minimax_w_mc - cost
+    
+    else: #L is max  
+        minimax_w_mc = alpha_beta_minimax(5, True, float('-inf'), float('inf'), minV, maxV)
+        minimax_w_mc_aftercost = minimax_w_mc - cost
+      
+    return minimax_wo_mc, minimax_w_mc, minimax_w_mc_aftercost
         
+## Driver Code P2##
+
+player1 = int(input("Enter who goes first [0 for Light, 1 for L]: "))
+cost = float(input("Enter the cost of using Mind Control: "))
+maxV = float(input("Enter base strength for Light: "))
+minV = float(input("Enter base strength for L: "))
+
+x, y, z = game_init(player1, cost, maxV, minV) #x, y, z is sequentially what is returned in the called function
+
+print(f"Minimax value without Mind Control: {x}")
+print(f"Minimax value with Mind Control: {y}")
+print(f"Minimax value with Mind Control after cost: {z}")
+print()
+
+if x > 0:
+    print("Light should not use Mind COntrol as the position is already winning!")
+
+elif z > 0:
+    print("Light shoulf use Mind Control!")
+else:
+    print("Light should not use Mind Control as the position is losing either way!")
     
